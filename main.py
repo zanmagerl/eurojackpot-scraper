@@ -61,7 +61,7 @@ def hello_pubsub(event, context):
 
         content = f'{main_numbers} + {supplementary_numbers}'
 
-        messages = [_construct_mail(recipient, content) for recipient in RECIPIENT_EMAILS.split(",")]
+        messages = [_construct_mail(recipient, content) for recipient in RECIPIENT_EMAILS.split("&")]
         
         try:
             for message in messages:
