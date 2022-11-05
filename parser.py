@@ -41,7 +41,7 @@ def _are_numbers_fresh(date_section: str) -> bool:
     parsed_date = "-".join(list(map(lambda x: x.strip(), date_section.split(" ")))[-3:])
     timestamp = strptime(parsed_date, "%d-%b-%Y")
     
-    return datetime.fromtimestamp(mktime(timestamp)).date() != date.today()
+    return datetime.fromtimestamp(mktime(timestamp)).date() == date.today()
 
 def hello_pubsub(event, context):
     
@@ -61,7 +61,7 @@ def hello_pubsub(event, context):
 
         content = f'{main_numbers} + {supplementary_numbers}'
 
-        messages = [_construct_mail(recipient, content) for recipient in RECIPIENT_EMAILS]
+        messages = [_construct_mail(recipient, content) for recipient in RECIPIENT_EMAILS.split(",")]
         
         try:
             for message in messages:
@@ -75,4 +75,4 @@ def hello_pubsub(event, context):
         
     else:
         logging.warn("Numbers for today are not ready yet...")
-        return Response(status=500)
+        raise Exception("Numbers are not ready yet!")
