@@ -31,5 +31,7 @@ jobs:
         event_trigger_type: 'google.pubsub.topic.publish'
         event_trigger_resource: '${{ secrets.GCP_PUBSUB_TRIGGER }}'
         event_trigger_service: 'pubsub.googleapis.com'
+        event_trigger_retry: true
+        
         
         
