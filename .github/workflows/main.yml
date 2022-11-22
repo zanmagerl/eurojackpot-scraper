@@ -23,7 +23,7 @@ jobs:
       with:
         name: 'function-eurojackpot'
         runtime: 'python310'
-        entry_point: 'hello_pubsub'
+        entry_point: 'retrieve_numbers'
         memory_db: '128'
         env_vars: 'SENDER_EMAIL=${{ secrets.SENDER_EMAIL }},RECIPIENT_EMAILS=${{ secrets.RECIPIENT_EMAILS }}'
         secret_environment_variables: 'SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY_SECRET_REF }}'

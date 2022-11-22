@@ -1,7 +1,5 @@
-# Function dependencies, for example:
-# package>=version
-lxml
-sendgrid
-flask
-requests
-google-cloud-logging
+lxml==4.9.1
+sendgrid==6.9.7
+flask==2.2.2
+requests==2.24.0
+google-cloud-logging==3.2.5
