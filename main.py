@@ -32,6 +32,7 @@ EMAIL_SUBJECT = 'This week\'s Eurojackpot numbers'
 # Sendgrid API key
 SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 
+
 def __construct_mail(recipient: str, content: str) -> Mail:
     """
     Constructs email object that is required by SendGrid library.
@@ -46,6 +47,7 @@ def __construct_mail(recipient: str, content: str) -> Mail:
         html_content=content
     )
 
+
 def __are_numbers_fresh(date_section: str) -> bool:
     """ 
     Checks if date on the page matches today's date.
@@ -56,6 +58,7 @@ def __are_numbers_fresh(date_section: str) -> bool:
     timestamp = strptime(parsed_date, "%d-%b-%Y")
     return datetime.fromtimestamp(mktime(timestamp)).date() == date.today()
 
+
 def __get_emails() -> List[str]:
     """
     Returns list of recipient emails. Emails are given with string separated by '&'.
@@ -63,13 +66,14 @@ def __get_emails() -> List[str]:
     """
     return RECIPIENT_EMAILS.split("&")
 
+
 def retrieve_numbers(event, context):
     """
     Function entry point for Google Cloud Function execution lifecycle.
     :raises Exception: if numbers are not ready or there is an error with sending email. Infrastructure will then retry the execution of the function.
     :return: HTTP 200 is the numbers were successfully retrieved
     """
-    
+
     logging.info("Retrieving latest available Eurojackpot numbers")
 
     page = requests.get(RESULT_SITE)
@@ -87,7 +91,7 @@ def retrieve_numbers(event, context):
         content = f'{main_numbers} + {supplementary_numbers}'
 
         messages = [__construct_mail(recipient, content) for recipient in __get_emails()]
-        
+
         try:
             for message in messages:
                 sg = SendGridAPIClient(SENDGRID_API_KEY)
@@ -97,7 +101,7 @@ def retrieve_numbers(event, context):
         except Exception as e:
             logging.error("Error while sending mail: ", e)
             raise Exception("Unable to send mail")
-        
+
     else:
         logging.warn("Numbers for today are not ready yet...")
         raise Exception("Numbers are not ready yet!")
